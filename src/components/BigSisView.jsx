@@ -4,7 +4,7 @@ import { HugContext } from '../context/HugContext';
 import { format } from 'date-fns';
 
 export default function BigSisDashboard() {
-  const { requests, acceptHug, history, refreshTokens, tokens } = useContext(HugContext);
+  const { isLoading, requests, acceptHug, history, refreshTokens, tokens } = useContext(HugContext);
 
   // --- PIN PAD STATE ---
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,10 +42,21 @@ export default function BigSisDashboard() {
     setIsError(false);
   };
 
+  if (isLoading) {
+    return (
+      <div className="max-w-md mx-auto p-6 min-h-[80vh] flex flex-col items-center justify-center space-y-6 animate-pulse">
+        <div className="bg-purple-100 p-6 rounded-full inline-block relative animate-bounce">
+          <HeartHandshake className="text-brand w-12 h-12" />
+        </div>
+        <p className="text-xl font-bold text-purple-600">Polishing the dashboard... 👑✨</p>
+      </div>
+    );
+  }
+
   // --- PIN PAD SCREEN ---
   if (!isAuthenticated) {
     return (
-      <div className="max-w-md mx-auto p-6 pt-12 space-y-8 flex flex-col items-center justify-center min-h-[80vh] animate-fade-in">
+      <div className="max-w-md mx-auto p-6 pt-24 space-y-8 flex flex-col items-center justify-center min-h-[80vh] animate-fade-in">
         
         {/* Header */}
         <div className="text-center space-y-2">

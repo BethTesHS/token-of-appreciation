@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 export const HugContext = createContext();
 
 export const HugProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [tokens, setTokens] = useState(0);
   const [requests, setRequests] = useState([]);
   const [history, setHistory] = useState([]);
@@ -34,6 +35,8 @@ export const HugProvider = ({ children }) => {
         .eq('status', 'accepted')
         .order('accepted_at', { ascending: true });
       if (historyData) setHistory(historyData);
+
+      setIsLoading(false);
     };
 
     fetchData();
@@ -96,7 +99,7 @@ export const HugProvider = ({ children }) => {
   };
 
   return (
-    <HugContext.Provider value={{ tokens, requests, history, requestHug, acceptHug, refreshTokens }}>
+    <HugContext.Provider value={{ isLoading, tokens, requests, history, requestHug, acceptHug, refreshTokens }}>
       {children}
     </HugContext.Provider>
   );

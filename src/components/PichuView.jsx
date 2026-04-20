@@ -4,13 +4,25 @@ import { HugContext } from '../context/HugContext';
 import { format } from 'date-fns';
 
 export default function PichuView() {
-  const { tokens, requestHug, history } = useContext(HugContext);
+  const { isLoading, tokens, requestHug, history } = useContext(HugContext);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-md mx-auto p-6 min-h-[80vh] flex flex-col items-center justify-center space-y-6 animate-pulse">
+        <div className="relative">
+          <Heart size={64} className="fill-brand text-brand animate-bounce" />
+          <Sparkles className="absolute -top-2 -right-4 text-yellow-400 animate-spin" size={24} />
+        </div>
+        <p className="text-xl font-bold text-purple-600">Gathering hugs... 🧸✨</p>
+      </div>
+    );
+  }
 
   const totalHugs = history.length;
   const recentHugs = history.slice(-3).reverse();
 
   return (
-    <div className="max-w-md mx-auto p-6 pt-12 space-y-8 animate-fade-in">
+    <div className="max-w-md mx-auto p-6 pt-24 space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-brand-dark flex items-center justify-center gap-2">
