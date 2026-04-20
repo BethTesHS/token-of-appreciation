@@ -10,7 +10,7 @@ export default function PichuView() {
   const recentHugs = history.slice(-3).reverse();
 
   return (
-    <div className="max-w-md mx-auto p-6 space-y-8 animate-fade-in">
+    <div className="max-w-md mx-auto p-6 pt-12 space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-brand-dark flex items-center justify-center gap-2">

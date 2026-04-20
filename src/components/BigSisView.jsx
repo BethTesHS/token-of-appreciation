@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { HeartHandshake, CheckCircle2, RotateCcw, Delete, Lock } from 'lucide-react';
+import { HeartHandshake, CheckCircle2, RotateCcw, Delete, Lock, Calendar, Clock } from 'lucide-react';
 import { HugContext } from '../context/HugContext';
 import { format } from 'date-fns';
 
@@ -45,14 +45,14 @@ export default function BigSisDashboard() {
   // --- PIN PAD SCREEN ---
   if (!isAuthenticated) {
     return (
-      <div className="max-w-md mx-auto p-6 space-y-8 flex flex-col items-center justify-center min-h-[80vh] animate-fade-in">
+      <div className="max-w-md mx-auto p-6 pt-12 space-y-8 flex flex-col items-center justify-center min-h-[80vh] animate-fade-in">
         
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="bg-white p-4 rounded-full inline-block shadow-md border-2 border-purple-100 mb-2">
             <Lock className="text-brand w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-brand-dark">Just Bethhhhh!</h1>
+          <h1 className="text-2xl font-bold text-brand-dark">Big Sis Only!</h1>
           <p className="text-purple-600 font-medium">Enter your secret PIN</p>
         </div>
 
@@ -100,11 +100,15 @@ export default function BigSisDashboard() {
     );
   }
 
-  // --- MAIN DASHBOARD (Shows only after correct PIN) ---
+  // Calculate Report Data
+  const totalHugs = history.length;
+  const recentHugs = history.slice(-3).reverse();
+
+  // --- MAIN DASHBOARD ---
   return (
-    <div className="max-w-md mx-auto p-6 space-y-6 animate-fade-in">
-      <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-brand-dark">Bethhhhh's Dashboard</h1>
+    <div className="max-w-md mx-auto p-6 pt-12 space-y-6 animate-fade-in">
+      <div className="text-center mb-6">
+        <h1 className="text-2xl font-bold text-brand-dark">Big Sis Dashboard</h1>
         <p className="text-purple-600">Managing Pichu's hugs</p>
       </div>
 
@@ -156,14 +160,43 @@ export default function BigSisDashboard() {
         )}
       </div>
 
-      <div className="text-center text-sm text-purple-400 mt-8">
-        Total hugs given: <span className="font-bold">{history.length}</span>
+      {/* Weekly Status Report */}
+      <div className="bg-white/80 rounded-3xl p-6 shadow-md border-2 border-purple-100">
+        <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+          <Calendar size={20} /> Weekly Hug Report
+        </h3>
+        
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="bg-purple-50 rounded-xl p-4 text-center">
+            <span className="block text-3xl font-black text-brand">{totalHugs}</span>
+            <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">Total Given</span>
+          </div>
+          <div className="bg-purple-50 rounded-xl p-4 text-center">
+            <span className="block text-3xl font-black text-brand">{tokens}</span>
+            <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">Tokens Left</span>
+          </div>
+        </div>
+
+        {history.length > 0 && (
+          <div className="space-y-3 mt-6">
+            <p className="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2">Recent Hugs Given</p>
+            {recentHugs.map((hug) => (
+              <div key={hug.id} className="flex items-center gap-3 bg-purple-50 p-3 rounded-xl text-sm text-brand-dark">
+                <Clock size={16} className="text-brand" />
+                <span>{format(new Date(hug.accepted_at), "EEEE 'at' h:mm a")}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       
-      {/* Optional: Add a subtle logout button to lock it again */}
+      {/* Logout button */}
       <div className="flex justify-center mt-4">
           <button 
-            onClick={() => setIsAuthenticated(false)}
+            onClick={() => {
+              setIsAuthenticated(false);
+              setPin(''); // This is the magic line that clears the dots!
+            }}
             className="text-xs text-purple-400 hover:text-purple-600 font-medium flex items-center gap-1"
           >
             <Lock size={12} /> Lock Dashboard
