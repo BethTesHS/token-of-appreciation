@@ -171,10 +171,10 @@ export default function BigSisDashboard() {
         )}
       </div>
 
-      {/* Weekly Status Report */}
+      {/* Status Report */}
       <div className="bg-white/80 rounded-3xl p-6 shadow-md border-2 border-purple-100">
         <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
-          <Calendar size={20} /> Weekly Hug Report
+          <Calendar size={20} /> Hug Report
         </h3>
         
         <div className="grid grid-cols-2 gap-4 mb-4">
