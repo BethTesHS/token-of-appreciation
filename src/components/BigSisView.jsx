@@ -63,7 +63,7 @@ export default function BigSisDashboard() {
           <div className="bg-white p-4 rounded-full inline-block shadow-md border-2 border-purple-100 mb-2">
             <Lock className="text-brand w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-brand-dark">Big Sis Only!</h1>
+          <h1 className="text-2xl font-bold text-brand-dark">Just Bethhhh!</h1>
           <p className="text-purple-600 font-medium">Enter your secret PIN</p>
         </div>
 
@@ -119,7 +119,7 @@ export default function BigSisDashboard() {
   return (
     <div className="max-w-md mx-auto p-6 pt-12 space-y-6 animate-fade-in">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-brand-dark">Big Sis Dashboard</h1>
+        <h1 className="text-2xl font-bold text-brand-dark">Just Bethhh's Dashboard</h1>
         <p className="text-purple-600">Managing Pichu's hugs</p>
       </div>
 
