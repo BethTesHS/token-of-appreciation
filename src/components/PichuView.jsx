@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Heart, Sparkles, Clock, Calendar } from 'lucide-react';
-import { HugContext } from '../context/HugContext';
+import { HugContext } from '../context/HugContext.js';
 import { format } from 'date-fns';
 
 export default function PichuView() {
@@ -10,10 +10,10 @@ export default function PichuView() {
     return (
       <div className="max-w-md mx-auto p-6 min-h-[80vh] flex flex-col items-center justify-center space-y-6 animate-pulse">
         <div className="relative">
-          <Heart size={64} className="fill-brand text-brand animate-bounce" />
-          <Sparkles className="absolute -top-2 -right-4 text-yellow-400 animate-spin" size={24} />
+          <Heart size={64} className="fill-brand text-brand animate-bounce drop-shadow" />
+          <Sparkles className="absolute -top-2 -right-4 text-yellow-400 toa-sparkle" size={24} />
         </div>
-        <p className="text-xl font-bold text-purple-600">Gathering hugs... 🧸✨</p>
+        <p className="text-xl font-extrabold text-purple-700">Gathering hugs... 🧸✨</p>
       </div>
     );
   }
@@ -25,24 +25,27 @@ export default function PichuView() {
     <div className="max-w-md mx-auto p-6 pt-24 space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-brand-dark flex items-center justify-center gap-2">
-          <Sparkles className="text-yellow-400" />
-          Token of Appreciation
-          <Sparkles className="text-yellow-400" />
+        <h1 className="text-4xl font-extrabold flex items-center justify-center gap-2">
+          <Sparkles className="text-yellow-400 toa-sparkle" />
+          <span className="toa-title-gradient drop-shadow-sm">Token of Appreciation</span>
+          <Sparkles className="text-yellow-400 toa-sparkle" />
         </h1>
-        <p className="text-purple-600 font-medium">Pichu's personal hug treasury 💜</p>
+        <div className="flex items-center justify-center gap-2">
+          <span className="toa-badge">Pichu’s hug treasury</span>
+          <span className="toa-badge">💜</span>
+        </div>
       </div>
 
       {/* Token Counter */}
-      <div className="bg-white rounded-3xl p-8 shadow-xl shadow-purple-200 text-center border-4 border-purple-100">
-        <h2 className="text-xl font-bold text-gray-500 mb-4">Tokens Remaining</h2>
+      <div className="toa-card p-8 text-center">
+        <h2 className="text-lg font-extrabold text-purple-600 mb-4 tracking-tight">Tokens Remaining</h2>
         {/* Added flex-wrap just in case on smaller screens */}
         <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
           {[...Array(7)].map((_, i) => (
             <Heart 
               key={i} 
               size={36} 
-              className={i < tokens ? "fill-brand text-brand animate-pulse" : "fill-gray-200 text-gray-200"} 
+              className={i < tokens ? "fill-brand text-brand animate-pulse drop-shadow-sm" : "fill-gray-200 text-gray-200"} 
             />
           ))}
         </div>
@@ -50,35 +53,35 @@ export default function PichuView() {
         <button 
           onClick={requestHug}
           disabled={tokens === 0}
-          className="w-full bg-brand hover:bg-brand-dark disabled:bg-purple-300 text-white font-bold text-xl py-4 rounded-2xl transition-all transform active:scale-95 shadow-lg flex items-center justify-center gap-2"
+          className="w-full toa-btn-primary text-xl py-4"
         >
           {tokens > 0 ? 'Claim a Hug! 🧸' : 'Out of tokens! Wait for Big Sis ⏳'}
         </button>
       </div>
 
       {/*Status Report */}
-      <div className="bg-white/80 rounded-3xl p-6 shadow-md border-2 border-purple-100">
-        <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+      <div className="toa-card-soft p-6">
+        <h3 className="text-lg font-extrabold text-brand-dark mb-4 flex items-center gap-2">
           <Calendar size={20} /> Hug Report
         </h3>
         
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="bg-purple-50 rounded-xl p-4 text-center">
-            <span className="block text-3xl font-black text-brand">{totalHugs}</span>
-            <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">Total Received</span>
+          <div className="bg-white/70 rounded-2xl p-4 text-center border border-purple-100 shadow-sm">
+            <span className="block text-3xl font-black text-brand drop-shadow-sm">{totalHugs}</span>
+            <span className="text-xs font-extrabold text-purple-500 uppercase tracking-wider">Total Received</span>
           </div>
-          <div className="bg-purple-50 rounded-xl p-4 text-center">
-            <span className="block text-3xl font-black text-brand">{tokens}</span>
-            <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">Tokens Left</span>
+          <div className="bg-white/70 rounded-2xl p-4 text-center border border-purple-100 shadow-sm">
+            <span className="block text-3xl font-black text-brand drop-shadow-sm">{tokens}</span>
+            <span className="text-xs font-extrabold text-purple-500 uppercase tracking-wider">Tokens Left</span>
           </div>
         </div>
 
         {history.length > 0 && (
           <div className="space-y-3 mt-6">
-            <p className="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2">Recent Hugs</p>
+            <p className="text-sm font-extrabold text-purple-500 uppercase tracking-wider mb-2">Recent Hugs</p>
             {recentHugs.map((hug) => (
-              <div key={hug.id} className="flex items-center gap-3 bg-purple-50 p-3 rounded-xl text-sm text-brand-dark">
-                <Clock size={16} className="text-brand" />
+              <div key={hug.id} className="flex items-center gap-3 bg-white/70 p-3 rounded-2xl text-sm text-brand-dark border border-purple-100 shadow-sm">
+                <Clock size={16} className="text-brand drop-shadow-sm" />
                 <span>{format(new Date(hug.accepted_at), "EEEE 'at' h:mm a")}</span>
               </div>
             ))}

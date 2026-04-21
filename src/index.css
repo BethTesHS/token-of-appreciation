@@ -2,12 +2,115 @@
 
 /* Define your custom theme colors here instead of tailwind.config.js */
 @theme {
-  --color-brand-light: #f3e8ff;
+  --color-brand-light: #f6efff;
   --color-brand: #a855f7;
-  --color-brand-dark: #7e22ce;
+  --color-brand-dark: #6d28d9;
+
+  --color-candy: #ff5fa2;
+  --color-candy-soft: #ffe4f1;
+  --color-mint: #2dd4bf;
+  --color-sun: #fbbf24;
+  --color-ink: #2a1b3d;
+
+  --shadow-cute: 0 18px 45px rgba(88, 28, 135, 0.18);
+  --shadow-cute-sm: 0 10px 25px rgba(88, 28, 135, 0.14);
 }
 
-/* Apply your base styles */
-body {
-  @apply bg-brand-light text-brand-dark font-sans antialiased;
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: "Nunito", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    @apply bg-brand-light text-[color:var(--color-ink)] antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Baloo 2", "Nunito", ui-sans-serif, system-ui;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-candy) 25%, white);
+  }
+}
+
+@layer utilities {
+  .toa-bg {
+    background:
+      radial-gradient(900px 420px at 15% 10%, color-mix(in oklab, var(--color-candy) 18%, white) 0%, transparent 60%),
+      radial-gradient(900px 420px at 85% 0%, color-mix(in oklab, var(--color-brand) 18%, white) 0%, transparent 58%),
+      radial-gradient(850px 420px at 70% 95%, color-mix(in oklab, var(--color-mint) 18%, white) 0%, transparent 60%),
+      linear-gradient(180deg, color-mix(in oklab, var(--color-brand-light) 72%, white), var(--color-brand-light));
+  }
+
+  .toa-card {
+    @apply bg-white/80 backdrop-blur-xl border border-purple-100 rounded-3xl;
+    box-shadow: var(--shadow-cute);
+  }
+
+  .toa-card-soft {
+    @apply bg-white/70 backdrop-blur-xl border border-purple-100 rounded-3xl;
+    box-shadow: var(--shadow-cute-sm);
+  }
+
+  .toa-btn {
+    @apply inline-flex items-center justify-center gap-2 font-extrabold rounded-2xl px-5 py-3 transition
+      active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-200;
+  }
+
+  .toa-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-extrabold rounded-2xl px-5 py-3 transition text-white
+      active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-200;
+    background: linear-gradient(135deg, var(--color-brand), color-mix(in oklab, var(--color-candy) 60%, var(--color-brand)));
+    box-shadow: 0 16px 35px rgba(168, 85, 247, 0.35);
+  }
+
+  .toa-btn-primary:hover {
+    filter: saturate(1.05) brightness(1.02);
+  }
+
+  .toa-btn-primary:disabled {
+    @apply opacity-60;
+    box-shadow: none;
+    filter: grayscale(0.15);
+  }
+
+  .toa-badge {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-extrabold;
+    background: color-mix(in oklab, var(--color-candy) 14%, white);
+    color: color-mix(in oklab, var(--color-candy) 55%, black);
+    border: 1px solid color-mix(in oklab, var(--color-candy) 22%, white);
+  }
+
+  .toa-title-gradient {
+    background: linear-gradient(90deg, var(--color-brand-dark), var(--color-candy));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  @keyframes toa-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes toa-sparkle {
+    0% { transform: rotate(0deg) scale(0.9); opacity: 0.55; }
+    50% { transform: rotate(12deg) scale(1.06); opacity: 1; }
+    100% { transform: rotate(0deg) scale(0.9); opacity: 0.55; }
+  }
+
+  .toa-float {
+    animation: toa-float 4.5s ease-in-out infinite;
+  }
+
+  .toa-sparkle {
+    animation: toa-sparkle 3.2s ease-in-out infinite;
+  }
 }

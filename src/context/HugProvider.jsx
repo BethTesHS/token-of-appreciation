@@ -1,7 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-
-export const HugContext = createContext();
+import { HugContext } from './HugContext.js';
 
 export const HugProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,22 +41,15 @@ export const HugProvider = ({ children }) => {
     fetchData();
 
     // 2. Set up Real-time Subscriptions
-    const channel = supabase.channel('schema-db-changes')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'hugs' },
-        (payload) => {
-          // Re-fetch hugs on any change to keep it simple and in-sync
-          fetchData(); 
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'token_wallet' },
-        (payload) => {
-          setTokens(payload.new.tokens);
-        }
-      )
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'hugs' }, () => {
+        // Re-fetch hugs on any change to keep it simple and in-sync
+        fetchData();
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'token_wallet' }, (payload) => {
+        setTokens(payload.new.tokens);
+      })
       .subscribe();
 
     return () => {
@@ -75,32 +67,30 @@ export const HugProvider = ({ children }) => {
         .eq('id', 1);
 
       // Insert new request
-      await supabase
-        .from('hugs')
-        .insert([{ status: 'pending' }]);
+      await supabase.from('hugs').insert([{ status: 'pending' }]);
     }
   };
 
   const acceptHug = async (id) => {
     await supabase
       .from('hugs')
-      .update({ 
-        status: 'accepted', 
-        accepted_at: new Date().toISOString() 
+      .update({
+        status: 'accepted',
+        accepted_at: new Date().toISOString(),
       })
       .eq('id', id);
   };
 
   const refreshTokens = async () => {
-    await supabase
-      .from('token_wallet')
-      .update({ tokens: 7 })
-      .eq('id', 1);
+    await supabase.from('token_wallet').update({ tokens: 7 }).eq('id', 1);
   };
 
   return (
-    <HugContext.Provider value={{ isLoading, tokens, requests, history, requestHug, acceptHug, refreshTokens }}>
+    <HugContext.Provider
+      value={{ isLoading, tokens, requests, history, requestHug, acceptHug, refreshTokens }}
+    >
       {children}
     </HugContext.Provider>
   );
 };
+
